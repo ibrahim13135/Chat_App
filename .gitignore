@@ -1,0 +1,20 @@
+# venv files
+chat/
+__pycache__/
+
+# Python bytecode files
+*.pyc
+*.pyo
+
+# IDE files
+.vscode/
+.idea/
+.pytest/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Other files
+*.log
+*.tmp

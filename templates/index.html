@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        /* Global Styles */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        /* Chat Window Styles */
+
+        #messages {
+            width: 500px;
+            height: 500px;
+            overflow: auto;
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Scrollbar Styles */
+
+        #messages::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            border: 1px solid #f5f5f5;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        #messages::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 10px;
+            border: 1px solid #f5f5f5;
+        }
+
+        #messages::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+
+        /* Input Field Styles */
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            margin: 10px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #aaa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button Styles */
+
+        #sendbtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #sendbtn:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+    <div id="messages">
+
+    </div>
+    <input type="text" id="username" placeholder="Username">
+    <input type="text" id="message" placeholder="Write a Message">
+    <button id="sendbtn">Send</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var socket = io('http://localhost:5000');
+            socket.on('connect', function () {
+                socket.send('USER_CONNECTED');
+            });
+
+            socket.on('message', function (data) {
+                $('#messages').append($('<p>').text(data));
+            });
+
+            $('#sendbtn').on('click', function () {
+                socket.send($('#username').val() + ':' + $('#message').val());
+                $('#message').val('');
+            });
+        });
+    </script>
+</body>
+
+</html>
